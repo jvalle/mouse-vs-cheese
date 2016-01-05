@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "bower": "^1.7.2",
+    "css-loader": "0.17.0",
+    "file-loader": "^0.8.4",
+    "json-loader": "^0.5.3",
+    "less": "^2.5.3",
+    "less-loader": "^2.2.1",
+    "script-loader": "^0.6.1",
+    "style-loader": "^0.12.4",
+    "ts-loader": "^0.7.2",
+    "typescript": "^1.7.5",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.0"
+  }
+}

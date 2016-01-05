@@ -1,0 +1,6 @@
+{
+  "name": "mouse-vs-cheese",
+  "dependencies": {
+    "phaser": "~2.4.4"
+  }
+}
