@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"sourceMap": true
+		"sourceMap": true,
+		"moduleResolution": "node"
 	},
 	"files": [
 		"src/js/main.ts"
-	]
+	],
+	"moduleResolution": "node"
 }
