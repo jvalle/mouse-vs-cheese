@@ -4,7 +4,7 @@
 
 import GameState from './states/Game.ts';
 
-const game = new Phaser.Game(800, 600, Phaser.AUTO, 'app');
+const game = new Phaser.Game("100", "100", Phaser.AUTO);
 
 game.state.add('GameState', GameState);
 
