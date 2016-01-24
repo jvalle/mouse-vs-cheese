@@ -4,6 +4,6 @@
 
 export default class Cheese extends Phaser.Sprite {
 	constructor (game: Phaser.Game, x, y) {
-		super(game, x, y, 'Cheese');
+		super(game, x, y, 'cheese');
 	}
 }
