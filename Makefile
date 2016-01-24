@@ -6,6 +6,8 @@ WEBPACK_PATH=node_modules/.bin/webpack
 BOWER_PATH=node_modules/.bin/bower
 PHASER_TYPINGS_PATH=bower_components/phaser/typescript/
 PHASER_TYPINGS_OUTPUT_PATH=typings/phaser/
+ASSETS_PATH=src/assets/
+ASSETS_OUTPUT_PATH=dist/assets/
 
 .PHONEY: all phaser dist typings
 
@@ -31,6 +33,10 @@ dist: $(WEBPACK_PATH)
 $(PHASER_TYPINGS_OUTPUT_PATH):	
 	@mkdir -p $(PHASER_TYPINGS_OUTPUT_PATH)
 	@cp $(PHASER_TYPINGS_PATH)*.d.ts $(PHASER_TYPINGS_OUTPUT_PATH)
+
+$(ASSETS_OUTPUT_PATH):
+	@mkdir -p $(ASSETS_OUTPUT_PATH)
+	@cp $(ASSETS_PATH)/* $(ASSETS_OUTPUT_PATH)
 
 typings: $(PHASER_TYPINGS_OUTPUT_PATH)
 
