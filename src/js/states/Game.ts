@@ -33,16 +33,20 @@ export default class GameState extends Phaser.State {
 
 	update () {
 		if (this.cursors.up.isDown) {
-			this.player.body.velocity.y = -1 * this.mouseSpeed;
+			this.player.body.velocity.y = -this.mouseSpeed;
+			this.player.body.velocity.x = 0;
 			this.player.animations.play('up');
 		} else if (this.cursors.down.isDown) {
 			this.player.body.velocity.y = this.mouseSpeed;
+			this.player.body.velocity.x = 0;
 			this.player.animations.play('down');
 		} else if (this.cursors.left.isDown) {
-			this.player.body.velocity.x = -1 * this.mouseSpeed;
+			this.player.body.velocity.x = -this.mouseSpeed;
+			this.player.body.velocity.y = 0;
 			this.player.animations.play('left');
 		} else if (this.cursors.right.isDown) {
 			this.player.body.velocity.x = this.mouseSpeed;
+			this.player.body.velocity.y = 0;
 			this.player.animations.play('right');
 		} else {
 			this.player.body.velocity.x = 0;
