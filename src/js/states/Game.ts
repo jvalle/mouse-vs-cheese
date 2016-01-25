@@ -11,10 +11,9 @@ export default class GameState extends Phaser.State {
     map: Phaser.Tilemap;
     backgroundLayer: Phaser.TilemapLayer;
     blockedLayer: Phaser.TilemapLayer;
-	
-	mouseSpeed: number = 100;
+
 	mice: RatPack;
-	cursors: Phaser.CursorKeys;
+	spawnPositions: Array<Object>;
 
 	create () {
         // setup the map
@@ -23,15 +22,33 @@ export default class GameState extends Phaser.State {
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
 		this.blockedLayer = this.map.createLayer('blockedLayer');
 		this.game.physics.enable(this.blockedLayer);
+		this.map.setCollisionBetween(1, 200, true, 'blockedLayer');
+
+		this.spawnPositions = this.findObjectsByType('startingPosition', 'objectLayer').map(function (pos) {
+			return {
+				x: pos.x,
+				y: pos.y
+			};
+		});
 		
-		this.mice = new RatPack(this.game, 10);
-		// this.game.physics.arcade.enable(this.player);
+		console.log(this.spawnPositions);
+
+		this.mice = new RatPack(this.game, this.spawnPositions, 10);
 		this.world.addChild(this.mice);
-		
-		this.cursors = this.game.input.keyboard.createCursorKeys();
 	}
 
 	update () {
-
+		this.game.physics.arcade.collide(this.mice, this.blockedLayer);
+	}
+	
+	findObjectsByType (type: string, layer: string) {
+		var result = [];
+		this.map.objects[layer].forEach(function (el) {
+			if (el.type === type) {
+				// el.y -= this.map.tileHeight;
+				result.push(el);
+			}
+		});
+		return result;
 	}
 }
