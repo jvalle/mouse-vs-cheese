@@ -6,13 +6,14 @@ export default class Mouse extends Phaser.Sprite {
 	framerate: number = 10;
 	speed: number = 100;
 	cursors: Phaser.CursorKeys;
+	direction: string;
+	lastDirection: string;
 
-	constructor (game: Phaser.Game, x, y) {
-		// programatically set which axis to subtract the mouse w/h from to give the impression of walking on from off the screen
-		super(game, x - 32, y, 'mouse');
+	constructor (game: Phaser.Game, x, y, direction) {
+		super(game, x, y, 'mouse');
 
 		// programatically set the orientation of the mouse
-		this.frame = 6;
+		this.direction = direction;
 
 		// define sprite animations
 		this.animations.add('up', [9, 10, 11], this.framerate, true);
@@ -27,28 +28,25 @@ export default class Mouse extends Phaser.Sprite {
 	}
 
 	update () {
-		this.body.velocity.x = 75;
-		this.animations.play('right');
-		// if (this.cursors.up.isDown) {
-		// 	this.body.velocity.y = -this.speed;
-		// 	this.body.velocity.x = 0;
-		// 	this.animations.play('up');
-		// } else if (this.cursors.down.isDown) {
-		// 	this.body.velocity.y = this.speed;
-		// 	this.body.velocity.x = 0;
-		// 	this.animations.play('down');
-		// } else if (this.cursors.left.isDown) {
-		// 	this.body.velocity.x = -this.speed;
-		// 	this.body.velocity.y = 0;
-		// 	this.animations.play('left');
-		// } else if (this.cursors.right.isDown) {
-		// 	this.body.velocity.x = this.speed;
-		// 	this.body.velocity.y = 0;
-		// 	this.animations.play('right');
-		// } else {
-		// 	this.body.velocity.x = 0;
-		// 	this.body.velocity.y = 0;
-		// 	this.animations.stop();
-		// }
+		if (this.direction === 'right') {
+			this.body.velocity.x = this.speed;
+		} else if (this.direction === 'left') {
+			this.body.velocity.x = -this.speed;
+		} else if (this.direction === 'up') {
+			this.body.velocity.y = -this.speed;
+		} else {
+			this.body.velocity.y = this.speed;
+		}
+
+		this.animations.play(this.direction);
+	}
+
+	changeDirection () {
+		this.lastDirection = this.direction;
+		if (this.direction === 'right' || this.direction === 'left') {
+			this.direction = Math.round(Math.random()) ? 'up' : 'down';
+		} else {
+			this.direction = Math.round(Math.random()) ? 'left' : 'right';
+		}
 	}
 }

@@ -23,14 +23,35 @@ export default class RatPack extends Phaser.Group {
 
 		// setup a game timer to spawn enemies every x seconds
 		this.timer = this.game.time.create(false);
-		this.timer.loop(2500, this.spawnMouse, this);
+		this.timer.loop(100, this.spawnMouse, this);
 		this.timer.start();
 	}
 
 	spawnMouse () {
+		let newX;
+		let newY;
+		let direction;
+
 		if (this.qty--) {
+			if (this.curPos.x === 0) {
+				newX = this.curPos.x - 32;
+				newY = this.curPos.y;
+				direction = 'right';
+			} else if (this.curPos.x === this.game.width / 32) {
+				newX = this.curPos.x + 32;
+				newY = this.curPos.y;
+				direction = 'left'
+			} else if (this.curPos.y === 0) {
+				newX = this.curPos.x;
+				newY = this.curPos.y - 32;
+				direction = 'down';
+			} else {
+				newX = this.curPos.x;
+				newY = this.curPos.y + 32;
+				direction = 'up'
+			}
 			// add the mouse
-			this.add(new Mouse(this.game, this.curPos.x, this.curPos.y));
+			this.add(new Mouse(this.game, newX, newY, direction));
 
 			// get a random new span position
 			this.curPos = this.spawnPositions[Math.floor(Math.random() * this.spawnPositions.length)];

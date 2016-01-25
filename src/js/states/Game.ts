@@ -36,12 +36,16 @@ export default class GameState extends Phaser.State {
 		});
 
 		// create our mice group and add it to the world
-		this.mice = new RatPack(this.game, this.spawnPositions, 10);
+		this.mice = new RatPack(this.game, this.spawnPositions, 50);
 		this.world.addChild(this.mice);
 	}
 
 	update () {
-		this.game.physics.arcade.collide(this.mice, this.blockedLayer);
+		this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
+	}
+
+	mouseCollides(mouse, layer) {
+		mouse.changeDirection();
 	}
 
 	// helper function to get objects from map by type
