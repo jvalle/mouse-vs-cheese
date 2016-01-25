@@ -4,23 +4,25 @@
 
 import RatPack from '../entities/RatPack.ts';
 
+interface point { x: number, y: number };
+
 export default class GameState extends Phaser.State {
-    game: Phaser.Game;
-    
-    // map stuffs
-    map: Phaser.Tilemap;
-    backgroundLayer: Phaser.TilemapLayer;
-    blockedLayer: Phaser.TilemapLayer;
+	game: Phaser.Game;
+
+	// map stuffs
+	map: Phaser.Tilemap;
+	backgroundLayer: Phaser.TilemapLayer;
+	blockedLayer: Phaser.TilemapLayer;
 
 	// mouse stuffs
 	mice: RatPack;
-	spawnPositions: Array<Object>;
+	spawnPositions: point[];
 
 	create () {
-        // setup the map
-        this.map = this.game.add.tilemap('level1');
-        this.map.addTilesetImage('tiles', 'gameTiles');
-        this.backgroundLayer = this.map.createLayer('backgroundLayer');
+		// setup the map
+		this.map = this.game.add.tilemap('level1');
+		this.map.addTilesetImage('tiles', 'gameTiles');
+		this.backgroundLayer = this.map.createLayer('backgroundLayer');
 		this.blockedLayer = this.map.createLayer('blockedLayer');
 		this.game.physics.enable(this.blockedLayer);
 		this.map.setCollisionBetween(1, 200, true, 'blockedLayer');

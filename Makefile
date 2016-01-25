@@ -9,9 +9,9 @@ PHASER_TYPINGS_OUTPUT_PATH=typings/phaser/
 ASSETS_PATH=src/assets/
 ASSETS_OUTPUT_PATH=dist/assets/
 
-.PHONEY: all phaser dist typings
+.PHONEY: all phaser dist typings assets
 
-all: phaser typings dist
+all: phaser typings assets dist
 
 phaser: $(PHASER_OUTPUT_PATH) $(PHASER_OUTPUT_MAP_PATH)
 
@@ -39,6 +39,8 @@ $(ASSETS_OUTPUT_PATH):
 	@cp $(ASSETS_PATH)/* $(ASSETS_OUTPUT_PATH)
 
 typings: $(PHASER_TYPINGS_OUTPUT_PATH)
+
+assets: $(ASSETS_OUTPUT_PATH)
 
 devserver: $(WEBPACK_PATH) $(PHASER_OUTPUT_PATH) $(PHASER_OUTPUT_MAP_PATH)
 	@node server.js

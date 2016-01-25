@@ -4,13 +4,15 @@
 
 import Mouse from './Mouse.ts';
 
+interface point { x: number, y: number };
+
 export default class RatPack extends Phaser.Group {
 	qty: number;
-	spawnPositions: Array<any>;
-	curPos: any;
+	spawnPositions: point[];
+	curPos: point;
 	timer: Phaser.Timer;
 
-	constructor (game: Phaser.Game, spawnPositions: Array<any>, qty: number) {
+	constructor (game: Phaser.Game, spawnPositions: point[], qty: number) {
 		super(game);
 
 		this.enableBody = true;
