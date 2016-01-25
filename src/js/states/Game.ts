@@ -12,6 +12,7 @@ export default class GameState extends Phaser.State {
     backgroundLayer: Phaser.TilemapLayer;
     blockedLayer: Phaser.TilemapLayer;
 
+	// mouse stuffs
 	mice: RatPack;
 	spawnPositions: Array<Object>;
 
@@ -24,15 +25,15 @@ export default class GameState extends Phaser.State {
 		this.game.physics.enable(this.blockedLayer);
 		this.map.setCollisionBetween(1, 200, true, 'blockedLayer');
 
+		// obtain array of spawn positions from our tiledmap
 		this.spawnPositions = this.findObjectsByType('startingPosition', 'objectLayer').map(function (pos) {
 			return {
 				x: pos.x,
 				y: pos.y
 			};
 		});
-		
-		console.log(this.spawnPositions);
 
+		// create our mice group and add it to the world
 		this.mice = new RatPack(this.game, this.spawnPositions, 10);
 		this.world.addChild(this.mice);
 	}
@@ -40,15 +41,16 @@ export default class GameState extends Phaser.State {
 	update () {
 		this.game.physics.arcade.collide(this.mice, this.blockedLayer);
 	}
-	
+
+	// helper function to get objects from map by type
 	findObjectsByType (type: string, layer: string) {
 		var result = [];
 		this.map.objects[layer].forEach(function (el) {
 			if (el.type === type) {
-				// el.y -= this.map.tileHeight;
+				el.y -= this.map.tileHeight;
 				result.push(el);
 			}
-		});
+		}.bind(this));
 		return result;
 	}
 }

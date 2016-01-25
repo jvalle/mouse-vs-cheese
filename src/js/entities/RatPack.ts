@@ -5,16 +5,36 @@
 import Mouse from './Mouse.ts';
 
 export default class RatPack extends Phaser.Group {
+	qty: number;
+	spawnPositions: Array<any>;
+	curPos: any;
+	timer: Phaser.Timer;
+
 	constructor (game: Phaser.Game, spawnPositions: Array<any>, qty: number) {
 		super(game);
 
 		this.enableBody = true;
 		this.physicsBodyType = Phaser.Physics.ARCADE;
+		this.qty = qty;
+		this.spawnPositions = spawnPositions;
+		this.curPos = this.spawnPositions[Math.floor(Math.random() * this.spawnPositions.length)];
 
-		let pos = spawnPositions[Math.floor(Math.random() * spawnPositions.length)];
+		// setup a game timer to spawn enemies every x seconds
+		this.timer = this.game.time.create(false);
+		this.timer.loop(2500, this.spawnMouse, this);
+		this.timer.start();
+	}
 
-		for (let i = 0; i < qty; i++) {
-			this.add(new Mouse(this.game, pos.x, pos.y - 32));
+	spawnMouse () {
+		if (this.qty--) {
+			// add the mouse
+			this.add(new Mouse(this.game, this.curPos.x, this.curPos.y));
+
+			// get a random new span position
+			this.curPos = this.spawnPositions[Math.floor(Math.random() * this.spawnPositions.length)];
+		} else {
+			// if we have no more mice to draw, destroy the timer
+			this.timer.destroy();
 		}
 	}
 }

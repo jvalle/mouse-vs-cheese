@@ -8,7 +8,11 @@ export default class Mouse extends Phaser.Sprite {
 	cursors: Phaser.CursorKeys;
 
     constructor (game: Phaser.Game, x, y) {
-        super(game, x, y, 'mouse');
+		// programatically set which axis to subtract the mouse w/h from to give the impression of walking on from off the screen
+        super(game, x - 32, y, 'mouse');
+
+		// programatically set the orientation of the mouse
+		this.frame = 6;
 
         // define sprite animations
         this.animations.add('up', [9, 10, 11], this.framerate, true);
@@ -23,26 +27,28 @@ export default class Mouse extends Phaser.Sprite {
     }
 
 	update () {
-		if (this.cursors.up.isDown) {
-			this.body.velocity.y = -this.speed;
-			this.body.velocity.x = 0;
-			this.animations.play('up');
-		} else if (this.cursors.down.isDown) {
-			this.body.velocity.y = this.speed;
-			this.body.velocity.x = 0;
-			this.animations.play('down');
-		} else if (this.cursors.left.isDown) {
-			this.body.velocity.x = -this.speed;
-			this.body.velocity.y = 0;
-			this.animations.play('left');
-		} else if (this.cursors.right.isDown) {
-			this.body.velocity.x = this.speed;
-			this.body.velocity.y = 0;
-			this.animations.play('right');
-		} else {
-			this.body.velocity.x = 0;
-			this.body.velocity.y = 0;
-			this.animations.stop();
-		}
+		this.body.velocity.x = 75;
+		this.animations.play('right');
+		// if (this.cursors.up.isDown) {
+		// 	this.body.velocity.y = -this.speed;
+		// 	this.body.velocity.x = 0;
+		// 	this.animations.play('up');
+		// } else if (this.cursors.down.isDown) {
+		// 	this.body.velocity.y = this.speed;
+		// 	this.body.velocity.x = 0;
+		// 	this.animations.play('down');
+		// } else if (this.cursors.left.isDown) {
+		// 	this.body.velocity.x = -this.speed;
+		// 	this.body.velocity.y = 0;
+		// 	this.animations.play('left');
+		// } else if (this.cursors.right.isDown) {
+		// 	this.body.velocity.x = this.speed;
+		// 	this.body.velocity.y = 0;
+		// 	this.animations.play('right');
+		// } else {
+		// 	this.body.velocity.x = 0;
+		// 	this.body.velocity.y = 0;
+		// 	this.animations.stop();
+		// }
 	}
 }
