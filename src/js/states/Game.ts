@@ -25,7 +25,7 @@ export default class GameState extends Phaser.State {
 		this.backgroundLayer = this.map.createLayer('backgroundLayer');
 		this.blockedLayer = this.map.createLayer('blockedLayer');
 		this.game.physics.enable(this.blockedLayer);
-		this.map.setCollisionBetween(1, 200, true, 'blockedLayer');
+		this.map.setCollisionBetween(0, 1, true, 'blockedLayer');
 
 		// obtain array of spawn positions from our tiledmap
 		this.spawnPositions = this.findObjectsByType('startingPosition', 'objectLayer').map(function (pos) {
