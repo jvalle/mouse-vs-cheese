@@ -8,6 +8,8 @@ export default class Mouse extends Phaser.Sprite {
 	cursors: Phaser.CursorKeys;
 	direction: string;
 	lastDirection: string;
+	body: Phaser.Physics.Arcade.Body;
+	lastDirectionChange: number;
 
 	constructor (game: Phaser.Game, x, y, direction) {
 		super(game, x, y, 'mouse');
@@ -22,31 +24,76 @@ export default class Mouse extends Phaser.Sprite {
 		this.animations.add('right', [6, 7, 8], this.framerate, true);
 
 		// add physics
-		// this.game.physics.arcade.enable(this);
+		this.game.physics.arcade.enable(this);
+
+		this.setVelocity(this.direction);
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 	}
 
 	update () {
-		if (this.direction === 'right') {
+		// this.body.velocity.setTo(0);
+	}
+
+	setVelocity (direction) {
+		if (direction === 'right') {
 			this.body.velocity.x = this.speed;
-		} else if (this.direction === 'left') {
+		} else if (direction === 'left') {
 			this.body.velocity.x = -this.speed;
-		} else if (this.direction === 'up') {
+		} else if (direction === 'up') {
 			this.body.velocity.y = -this.speed;
 		} else {
 			this.body.velocity.y = this.speed;
 		}
 
-		this.animations.play(this.direction);
+		this.animations.play(direction);
 	}
 
-	changeDirection () {
-		this.lastDirection = this.direction;
-		if (this.direction === 'right' || this.direction === 'left') {
-			this.direction = Math.round(Math.random()) ? 'up' : 'down';
-		} else {
-			this.direction = Math.round(Math.random()) ? 'left' : 'right';
+	changeDirection (tile) {
+		// use array for possible combinations of x, ys
+		// ['right', ['up', x - 1, y - 1], ['down', x - 1, y + 1]]
+		if (this.game.time.now - this.lastDirectionChange < 100) {
+			this.setVelocity(this.direction);
+			return;
 		}
+		this.lastDirectionChange = this.game.time.now;
+		this.body.velocity.setTo(0);
+
+		if (this.direction === 'right') {
+			if (tile.layer.data[tile.y + 1][tile.x - 1].index !== 1 && tile.layer.data[tile.y - 1][tile.x - 1].index !== 1) {
+				this.direction = Math.round(Math.random()) ? 'up' : 'down';
+			} else if (tile.layer.data[tile.y + 1][tile.x - 1].index !== 1) {
+				this.direction = 'down';
+			} else {
+				this.direction = 'up';
+			}
+		} else if (this.direction === 'left') {
+			if (tile.layer.data[tile.y + 1][tile.x + 1].index !== 1 && tile.layer.data[tile.y - 1][tile.x + 1].index !== 1) {
+				this.direction = Math.round(Math.random()) ? 'up' : 'down';
+			} else if (tile.layer.data[tile.y + 1][tile.x + 1].index !== 1) {
+				this.direction = 'down';
+			} else {
+				this.direction = 'up';
+			}
+		} else if (this.direction === 'up') {
+			if (tile.layer.data[tile.y + 1][tile.x + 1].index !== 1 && tile.layer.data[tile.y + 1][tile.x - 1].index !== 1) {
+				this.direction = Math.round(Math.random()) ? 'left' : 'right';
+			} else if (tile.layer.data[tile.y + 1][tile.x + 1].index !== 1) {
+				this.direction = 'right';
+			} else {
+				this.direction = 'left';
+			}
+		} else {
+			if (tile.layer.data[tile.y - 1][tile.x + 1].index !== 1 && tile.layer.data[tile.y - 1][tile.x - 1].index !== 1) {
+				this.direction = Math.round(Math.random()) ? 'left' : 'right';
+			} else if (tile.layer.data[tile.y - 1][tile.x + 1].index !== 1) {
+				this.direction = 'right';
+			} else {
+				this.direction = 'left';
+			}
+		}
+
+		this.setVelocity(this.direction);
+
 	}
 }

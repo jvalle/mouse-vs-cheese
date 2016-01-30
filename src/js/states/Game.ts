@@ -28,24 +28,29 @@ export default class GameState extends Phaser.State {
 		this.map.setCollisionBetween(0, 1, true, 'blockedLayer');
 
 		// obtain array of spawn positions from our tiledmap
-		this.spawnPositions = this.findObjectsByType('startingPosition', 'objectLayer').map(function (pos) {
-			return {
-				x: pos.x,
-				y: pos.y
-			};
-		});
+		this.spawnPositions = this.findSpawnPoints();
 
 		// create our mice group and add it to the world
-		this.mice = new RatPack(this.game, this.spawnPositions, 50);
+		this.mice = new RatPack(this.game, this.spawnPositions, 10, this.map);
 		this.world.addChild(this.mice);
 	}
 
 	update () {
 		this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
+		// this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
 	}
 
-	mouseCollides(mouse, layer) {
-		mouse.changeDirection();
+	mouseCollides (mouse, tile) {
+		mouse.changeDirection(tile);
+	}
+
+	findSpawnPoints () {
+		return this.findObjectsByType('startingPosition', 'objectLayer').map(function(pos) {
+			return {
+				x: pos.x,
+				y: pos.y
+			}
+		});
 	}
 
 	// helper function to get objects from map by type

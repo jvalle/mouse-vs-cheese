@@ -11,19 +11,21 @@ export default class RatPack extends Phaser.Group {
 	spawnPositions: point[];
 	curPos: point;
 	timer: Phaser.Timer;
+	board: Phaser.Tilemap;
 
-	constructor (game: Phaser.Game, spawnPositions: point[], qty: number) {
+	constructor (game: Phaser.Game, spawnPositions: point[], qty: number, map: Phaser.Tilemap) {
 		super(game);
 
 		this.enableBody = true;
 		this.physicsBodyType = Phaser.Physics.ARCADE;
+		this.board = map;
 		this.qty = qty;
 		this.spawnPositions = spawnPositions;
 		this.curPos = this.spawnPositions[Math.floor(Math.random() * this.spawnPositions.length)];
 
 		// setup a game timer to spawn enemies every x seconds
 		this.timer = this.game.time.create(false);
-		this.timer.loop(100, this.spawnMouse, this);
+		this.timer.loop(1000, this.spawnMouse, this);
 		this.timer.start();
 	}
 
