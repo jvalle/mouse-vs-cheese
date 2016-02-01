@@ -22,6 +22,7 @@ export default class Mouse extends Phaser.Sprite {
 		this.animations.add('down', [0, 1, 2], this.framerate, true);
 		this.animations.add('left', [3, 4, 5], this.framerate, true);
 		this.animations.add('right', [6, 7, 8], this.framerate, true);
+		this.animations.add('death', [12, 13, 14, 14, 14, 14], this.framerate, false);
 
 		// add physics
 		this.game.physics.arcade.enable(this);
@@ -32,7 +33,7 @@ export default class Mouse extends Phaser.Sprite {
 	}
 
 	update () {
-		// this.body.velocity.setTo(0);
+
 	}
 
 	setVelocity (direction) {
@@ -50,13 +51,6 @@ export default class Mouse extends Phaser.Sprite {
 	}
 
 	changeDirection (tile) {
-		// use array for possible combinations of x, ys
-		// ['right', ['up', x - 1, y - 1], ['down', x - 1, y + 1]]
-		if (this.game.time.now - this.lastDirectionChange < 100) {
-			this.setVelocity(this.direction);
-			return;
-		}
-		this.lastDirectionChange = this.game.time.now;
 		this.body.velocity.setTo(0);
 
 		if (this.direction === 'right') {
@@ -95,5 +89,9 @@ export default class Mouse extends Phaser.Sprite {
 
 		this.setVelocity(this.direction);
 
+	}
+
+	onKilled () {
+		this.animations.play('death').onComplete.add(() => this.destroy());
 	}
 }

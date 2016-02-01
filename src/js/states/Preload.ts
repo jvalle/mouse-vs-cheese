@@ -7,7 +7,8 @@ export default class Preload extends Phaser.State {
 		this.load.tilemap('level1', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('gameTiles', 'assets/tiles.png');
 		
-		this.load.spritesheet('mouse', 'assets/mouse.png', 32, 32, 12);
+		this.load.spritesheet('mouse', 'assets/mouse.png', 32, 32, 15);
+		this.load.image('trap', 'assets/trap.png');
 	}
 	
 	create () {

@@ -18,6 +18,8 @@ export default class GameState extends Phaser.State {
 	mice: RatPack;
 	spawnPositions: point[];
 
+	traps: Phaser.Group;
+
 	create () {
 		// setup the map
 		this.map = this.game.add.tilemap('level1');
@@ -33,15 +35,25 @@ export default class GameState extends Phaser.State {
 		// create our mice group and add it to the world
 		this.mice = new RatPack(this.game, this.spawnPositions, 10, this.map);
 		this.world.addChild(this.mice);
+
+		this.traps = new Phaser.Group(this.game, null, 'traps', true, true, Phaser.Physics.ARCADE);
+		this.traps.physicsBodyType = Phaser.Physics.ARCADE;
+
+		this.game.input.onDown.add(this.onClick, this);
 	}
 
 	update () {
 		this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
-		// this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
+		this.game.physics.arcade.collide(this.mice, this.traps, this.mouseTrap);
 	}
 
 	mouseCollides (mouse, tile) {
 		mouse.changeDirection(tile);
+	}
+
+	mouseTrap (mouse, trap) {
+		mouse.onKilled();
+		trap.destroy();
 	}
 
 	findSpawnPoints () {
@@ -51,6 +63,13 @@ export default class GameState extends Phaser.State {
 				y: pos.y
 			}
 		});
+	}
+
+	onClick () {
+		var tile = this.blockedLayer.getTileXY(this.game.input.mousePointer.x, this.game.input.mousePointer.y, <Phaser.Point>{});
+		if (this.blockedLayer.layer.data[tile.y][tile.x].index === -1) {
+			this.traps.create(tile.x * 32, tile.y * 32, 'trap');
+		}
 	}
 
 	// helper function to get objects from map by type
