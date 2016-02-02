@@ -65,8 +65,9 @@ export default class Level1 extends Phaser.State {
 	}
 
 	mouseTrap (mouse : Mouse, trap : Phaser.Sprite) {
-		mouse.onKilled();
-		this.mouseCount--;
+		mouse.onKilled(function() {
+			this.mouseCount--;
+		}.bind(this));
 		trap.destroy();
 	}
 

@@ -106,7 +106,10 @@ export default class Mouse extends Phaser.Sprite {
 		}
 	}
 
-	onKilled () {
-		this.animations.play('death').onComplete.add(() => this.destroy());
+	onKilled (cb) {
+		this.animations.play('death').onComplete.add(() => {
+			this.destroy();
+			cb();
+		});
 	}
 }

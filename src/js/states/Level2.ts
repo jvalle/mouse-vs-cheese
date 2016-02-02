@@ -55,7 +55,6 @@ export default class Level1 extends Phaser.State {
 		this.game.physics.arcade.collide(this.mice, this.traps, this.mouseTrap, null, this);
 		this.game.physics.arcade.collide(this.mice, this.cheese, this.mouseEatsCheese);
 		
-		console.log(this.mouseCount);
 		if (this.mouseCount < 1) {
 			this.game.state.start('int2', true);
 		}
@@ -66,8 +65,9 @@ export default class Level1 extends Phaser.State {
 	}
 
 	mouseTrap (mouse : Mouse, trap : Phaser.Sprite) {
-		mouse.onKilled();
-		this.mouseCount--;
+		mouse.onKilled(function() {
+			this.mouseCount--;
+		}.bind(this));
 		trap.destroy();
 	}
 
