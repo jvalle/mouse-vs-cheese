@@ -11,21 +11,24 @@ export default class RatPack extends Phaser.Group {
 	spawnPositions: point[];
 	curPos: point;
 	timer: Phaser.Timer;
-	board: Phaser.Tilemap;
+	mouseSpeed: number;
+	frequency: number;
 
-	constructor (game: Phaser.Game, spawnPositions: point[], qty: number, map: Phaser.Tilemap) {
+	constructor (game: Phaser.Game, spawnPositions: point[], qty: number, mouseSpeed : number = 100, freq : number = 1000) {
 		super(game);
 
 		this.enableBody = true;
 		this.physicsBodyType = Phaser.Physics.ARCADE;
-		this.board = map;
 		this.qty = qty;
 		this.spawnPositions = spawnPositions;
 		this.curPos = this.spawnPositions[Math.floor(Math.random() * this.spawnPositions.length)];
+		
+		this.mouseSpeed = mouseSpeed;
+		this.frequency = freq;
 
 		// setup a game timer to spawn enemies every x seconds
 		this.timer = this.game.time.create(false);
-		this.timer.loop(1000, this.spawnMouse, this);
+		this.timer.loop(this.frequency, this.spawnMouse, this);
 		this.timer.start();
 	}
 
@@ -53,7 +56,7 @@ export default class RatPack extends Phaser.Group {
 				direction = 'up'
 			}
 			// add the mouse
-			this.add(new Mouse(this.game, newX, newY, direction));
+			this.add(new Mouse(this.game, newX, newY, direction, this.mouseSpeed));
 
 			// get a random new span position
 			this.curPos = this.spawnPositions[Math.floor(Math.random() * this.spawnPositions.length)];

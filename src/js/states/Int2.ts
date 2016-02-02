@@ -4,12 +4,12 @@
 
 export default class Int1 extends Phaser.State {
 	create () {
-		var header = this.game.add.text(100, 100, 'Level 1 Complete!', {
+		var header = this.game.add.text(100, 100, 'Level 2 Complete!', {
 				font: 'Arial',
 				fontSize: '36px',
 				fill: '#ffffff'
 		});
-		var text = this.game.add.text(100, header.height * 2 + 110, 'ya beat the first there level, nice job.\nyou may have noticed that you only get a certain number of traps,\nthis will be roughly equal to the number of mice for that level, so be wise naw.\n\nclick anywhere to git on to the next level.', {
+		var text = this.game.add.text(100, header.height * 2 + 110, 'well done there. boy thems a lots a mice a\'comin fer that cheese\nhungrier \'em mice get the faster thems a\'comin\nso git yer trigger finger ready for this next go\'roun', {
 				font: 'Arial',
 				fontSize: '18px',
 				fill: '#ffffff'
@@ -19,6 +19,6 @@ export default class Int1 extends Phaser.State {
 	}
 
 	onClick () {
-		this.game.state.start('level2');
+		this.game.state.start('level3');
 	}
 }

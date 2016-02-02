@@ -27,7 +27,7 @@ export default class Level1 extends Phaser.State {
 
 	create () {
 		// setup the map
-		this.map = this.game.add.tilemap('level2');
+		this.map = this.game.add.tilemap('level3');
 		this.map.addTilesetImage('tiles', 'gameTiles');
 		this.backgroundLayer = this.map.createLayer('backgroundLayer');
 		this.blockedLayer = this.map.createLayer('blockedLayer');
@@ -39,7 +39,7 @@ export default class Level1 extends Phaser.State {
 		this.cheesePosition = this.findPositionOfType('cheese');
 
 		// create our mice group and add it to the world
-		this.mice = new RatPack(this.game, this.spawnPositions, this.mouseCount);
+		this.mice = new RatPack(this.game, this.spawnPositions, this.mouseCount, 150);
 		this.world.addChild(this.mice);
 
 		this.cheese = new Cheese(this.game, this.cheesePosition[0].x, this.cheesePosition[0].y);
@@ -55,7 +55,6 @@ export default class Level1 extends Phaser.State {
 		this.game.physics.arcade.collide(this.mice, this.traps, this.mouseTrap, null, this);
 		this.game.physics.arcade.collide(this.mice, this.cheese, this.mouseEatsCheese);
 		
-		console.log(this.mouseCount);
 		if (this.mouseCount < 1) {
 			this.game.state.start('int2', true);
 		}

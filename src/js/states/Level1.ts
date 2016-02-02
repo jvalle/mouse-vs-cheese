@@ -39,7 +39,7 @@ export default class Level1 extends Phaser.State {
 		this.cheesePosition = this.findPositionOfType('cheese');
 
 		// create our mice group and add it to the world
-		this.mice = new RatPack(this.game, this.spawnPositions, 10, this.map);
+		this.mice = new RatPack(this.game, this.spawnPositions, this.mouseCount);
 		this.world.addChild(this.mice);
 
 		this.cheese = new Cheese(this.game, this.cheesePosition[0].x, this.cheesePosition[0].y);
@@ -64,6 +64,7 @@ export default class Level1 extends Phaser.State {
 		mouse.changeDirection(tile);
 	}
 
+	// mouse can keep colliding after dying so counter decrements
 	mouseTrap (mouse : Mouse, trap : Phaser.Sprite) {
 		mouse.onKilled();
 		this.mouseCount--;

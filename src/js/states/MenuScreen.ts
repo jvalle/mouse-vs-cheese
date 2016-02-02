@@ -9,7 +9,7 @@ export default class MenuScreen extends Phaser.State {
 				fontSize: '56px',
 				fill: '#ffffff'
 		});
-		var text = this.game.add.text(100, header.height + 110, 'welcome. those darn mice are gonna try real hard \nand get that there cheese. better click around and place some traps\n so that they can\'t get there in time!\n\nclick anywhere to start now', {
+		var text = this.game.add.text(100, header.height + 110, 'these darn mice \'ve been tryin\' an tryin\' to get yer cheese.\ntime to click around and place some traps\n so that they can\'t get there in time!\n\nclick anywhere to start na!', {
 				font: 'Arial',
 				fontSize: '18px',
 				fill: '#ffffff'

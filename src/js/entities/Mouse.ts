@@ -4,18 +4,19 @@
 
 export default class Mouse extends Phaser.Sprite {
 	framerate: number = 10;
-	speed: number = 100;
+	speed: number;
 	cursors: Phaser.CursorKeys;
 	direction: string;
 	lastDirection: string;
 	body: Phaser.Physics.Arcade.Body;
 	lastDirectionChange: number;
 
-	constructor (game: Phaser.Game, x, y, direction) {
+	constructor (game: Phaser.Game, x, y, direction, speed : number = 100) {
 		super(game, x, y, 'mouse');
 
 		// programatically set the orientation of the mouse
 		this.direction = direction;
+		this.speed = speed;
 
 		// define sprite animations
 		this.animations.add('up', [9, 10, 11], this.framerate, true);
