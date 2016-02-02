@@ -26,6 +26,7 @@ export default class Mouse extends Phaser.Sprite {
 
 		// add physics
 		this.game.physics.arcade.enable(this);
+		this.body.setSize(31, 31);
 
 		this.setVelocity(this.direction);
 
