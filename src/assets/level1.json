@@ -32,13 +32,13 @@
                  "name":"",
                  "properties":
                     {
-                     "health":"50"
+                     "health":"100"
                     },
                  "type":"cheese",
                  "visible":true,
                  "width":32,
-                 "x":449,
-                 "y":261
+                 "x":416,
+                 "y":256
                 }, 
                 {
                  "gid":3,

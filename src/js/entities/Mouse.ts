@@ -88,7 +88,20 @@ export default class Mouse extends Phaser.Sprite {
 		}
 
 		this.setVelocity(this.direction);
+	}
 
+	eatCheese () {
+		this.animations.stop();
+
+		if (this.direction === 'right') {
+			this.frame = 6;
+		} else if (this.direction === 'left') {
+			this.frame = 3;
+		} else if (this.direction === 'up') {
+			this.frame = 9;
+		} else {
+			this.frame = 0;
+		}
 	}
 
 	onKilled () {

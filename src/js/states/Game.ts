@@ -3,6 +3,8 @@
 /// <reference path="../../../typings/phaser/phaser.comments.d.ts"/>
 
 import RatPack from '../entities/RatPack.ts';
+import Mouse from '../entities/Mouse.ts';
+import Cheese from '../entities/Cheese.ts';
 
 interface point { x: number, y: number };
 
@@ -15,8 +17,10 @@ export default class GameState extends Phaser.State {
 	blockedLayer: Phaser.TilemapLayer;
 
 	// mouse stuffs
-	mice: RatPack;
 	spawnPositions: point[];
+	mice: RatPack;
+	cheesePosition: point[];
+	cheese: Cheese;
 
 	traps: Phaser.Group;
 
@@ -30,14 +34,17 @@ export default class GameState extends Phaser.State {
 		this.map.setCollisionBetween(0, 1, true, 'blockedLayer');
 
 		// obtain array of spawn positions from our tiledmap
-		this.spawnPositions = this.findSpawnPoints();
+		this.spawnPositions = this.findPositionOfType('startingPosition');
+		this.cheesePosition = this.findPositionOfType('cheese');
 
 		// create our mice group and add it to the world
 		this.mice = new RatPack(this.game, this.spawnPositions, 10, this.map);
 		this.world.addChild(this.mice);
 
+		this.cheese = new Cheese(this.game, this.cheesePosition[0].x, this.cheesePosition[0].y);
+		this.world.addChild(this.cheese);
+
 		this.traps = new Phaser.Group(this.game, null, 'traps', true, true, Phaser.Physics.ARCADE);
-		this.traps.physicsBodyType = Phaser.Physics.ARCADE;
 
 		this.game.input.onDown.add(this.onClick, this);
 	}
@@ -45,24 +52,22 @@ export default class GameState extends Phaser.State {
 	update () {
 		this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
 		this.game.physics.arcade.collide(this.mice, this.traps, this.mouseTrap);
+		this.game.physics.arcade.collide(this.mice, this.cheese, this.mouseEatsCheese);
 	}
 
-	mouseCollides (mouse, tile) {
+	mouseCollides (mouse : Mouse, tile : Phaser.Tile) {
 		mouse.changeDirection(tile);
 	}
 
-	mouseTrap (mouse, trap) {
+	mouseTrap (mouse : Mouse, trap : Phaser.Sprite) {
 		mouse.onKilled();
 		trap.destroy();
 	}
 
-	findSpawnPoints () {
-		return this.findObjectsByType('startingPosition', 'objectLayer').map(function(pos) {
-			return {
-				x: pos.x,
-				y: pos.y
-			}
-		});
+	mouseEatsCheese(cheese: Cheese, mouse: Mouse) {
+		console.log(cheese.health);
+		mouse.eatCheese();
+		cheese.health -= 10;
 	}
 
 	onClick () {
@@ -73,7 +78,7 @@ export default class GameState extends Phaser.State {
 	}
 
 	// helper function to get objects from map by type
-	findObjectsByType (type: string, layer: string) {
+	findObjectsByType (type : string, layer : string) {
 		var result = [];
 		this.map.objects[layer].forEach(function (el) {
 			if (el.type === type) {
@@ -82,5 +87,14 @@ export default class GameState extends Phaser.State {
 			}
 		}.bind(this));
 		return result;
+	}
+
+	findPositionOfType (type : string) {
+		return this.findObjectsByType(type, 'objectLayer').map(function(pos) {
+			return {
+				x: pos.x,
+				y: pos.y
+			}
+		});
 	}
 }
