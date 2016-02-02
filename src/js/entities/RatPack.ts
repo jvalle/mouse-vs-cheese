@@ -14,7 +14,7 @@ export default class RatPack extends Phaser.Group {
 	mouseSpeed: number;
 	frequency: number;
 
-	constructor (game: Phaser.Game, spawnPositions: point[], qty: number, mouseSpeed : number = 100, freq : number = 1000) {
+	constructor (game: Phaser.Game, spawnPositions: point[], qty: number, mouseSpeed : number, freq : number) {
 		super(game);
 
 		this.enableBody = true;

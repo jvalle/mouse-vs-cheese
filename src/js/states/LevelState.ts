@@ -8,7 +8,7 @@ import Cheese from '../entities/Cheese.ts';
 
 interface point { x: number, y: number };
 
-export default class Level1 extends Phaser.State {
+export default class LevelState extends Phaser.State {
 	game: Phaser.Game;
 
 	// map stuffs
@@ -19,15 +19,25 @@ export default class Level1 extends Phaser.State {
 	// mouse stuffs
 	spawnPositions: point[];
 	mice: RatPack;
-	mouseCount: number = 30;
 	cheesePosition: point[];
 	cheese: Cheese;
-
 	traps: Phaser.Group;
 
+	// level vars
+	mapName: string;
+	mouseCount: number;
+	mouseSpeed: number;
+	frequency: number;
+	nextState: string;
+
+	setupLevel () {
+
+	}
+
 	create () {
+		this.setupLevel();
 		// setup the map
-		this.map = this.game.add.tilemap('level2');
+		this.map = this.game.add.tilemap(this.mapName);
 		this.map.addTilesetImage('tiles', 'gameTiles');
 		this.backgroundLayer = this.map.createLayer('backgroundLayer');
 		this.blockedLayer = this.map.createLayer('blockedLayer');
@@ -39,7 +49,7 @@ export default class Level1 extends Phaser.State {
 		this.cheesePosition = this.findPositionOfType('cheese');
 
 		// create our mice group and add it to the world
-		this.mice = new RatPack(this.game, this.spawnPositions, this.mouseCount);
+		this.mice = new RatPack(this.game, this.spawnPositions, this.mouseCount, this.mouseSpeed, this.frequency);
 		this.world.addChild(this.mice);
 
 		this.cheese = new Cheese(this.game, this.cheesePosition[0].x, this.cheesePosition[0].y);
@@ -56,7 +66,11 @@ export default class Level1 extends Phaser.State {
 		this.game.physics.arcade.collide(this.mice, this.cheese, this.mouseEatsCheese);
 		
 		if (this.mouseCount < 1) {
-			this.game.state.start('int2', true);
+			this.game.state.start(this.nextState, true);
+		}
+
+		if (this.cheese.health < 1) {
+			this.game.state.start('gameOver', true, true);
 		}
 	}
 
@@ -64,8 +78,9 @@ export default class Level1 extends Phaser.State {
 		mouse.changeDirection(tile);
 	}
 
+	// mouse can keep colliding after dying so counter decrements
 	mouseTrap (mouse : Mouse, trap : Phaser.Sprite) {
-		mouse.onKilled(function() {
+		mouse.onKilled(function () {
 			this.mouseCount--;
 		}.bind(this));
 		trap.destroy();
