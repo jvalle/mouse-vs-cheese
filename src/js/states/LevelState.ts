@@ -49,7 +49,7 @@ export default class LevelState extends Phaser.State {
 		
 		this.trapCount = this.mouseCount;
 		
-		this.hud.init(this.game, this.trapCount.toString());	
+		this.hud.init(this.game, this.trapCount);
 
 		// obtain array of spawn positions from our tiledmap
 		this.spawnPositions = this.findPositionOfType('startingPosition');
@@ -95,7 +95,7 @@ export default class LevelState extends Phaser.State {
 	mouseEatsCheese (cheese: Cheese, mouse: Mouse) {
 		mouse.eatCheese();
 		cheese.health -= 10;
-		this.hud.update('cheeseHealth', cheese.health.toString());
+		this.hud.update('cheeseHealth', cheese.health);
 	}
 
 	onClick (event) {
@@ -106,14 +106,14 @@ export default class LevelState extends Phaser.State {
 			trap.inputEnabled = true;
 			trap.events.onInputDown.add(this.trapClicked, this);
 			this.trapCount--;
-			this.hud.update('mouseTraps', this.trapCount.toString());
+			this.hud.update('mouseTraps', this.trapCount);
 		}
 	}
 
 	trapClicked (trap) {
 		trap.destroy();
 		this.trapCount++;
-		this.hud.update('mouseTraps', this.trapCount.toString());
+		this.hud.update('mouseTraps', this.trapCount);
 	}	
 
 	// helper function to get objects from map by type
