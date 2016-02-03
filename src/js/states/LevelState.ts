@@ -78,7 +78,6 @@ export default class LevelState extends Phaser.State {
 		mouse.changeDirection(tile);
 	}
 
-	// mouse can keep colliding after dying so counter decrements
 	mouseTrap (mouse : Mouse, trap : Phaser.Sprite) {
 		mouse.onKilled(function () {
 			this.mouseCount--;
