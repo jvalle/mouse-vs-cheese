@@ -96,6 +96,9 @@ export default class LevelState extends Phaser.State {
 		mouse.eatCheese();
 		cheese.health -= 10;
 		this.hud.update('cheeseHealth', cheese.health);
+		setTimeout(function () {
+			this.mouseCount--;
+		}.bind(this), 1000);
 	}
 
 	onClick (event) {
