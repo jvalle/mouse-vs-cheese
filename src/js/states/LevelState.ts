@@ -5,6 +5,7 @@
 import RatPack from '../entities/RatPack.ts';
 import Mouse from '../entities/Mouse.ts';
 import Cheese from '../entities/Cheese.ts';
+import Hud from '../entities/Hud.ts';
 
 interface point { x: number, y: number };
 
@@ -15,6 +16,7 @@ export default class LevelState extends Phaser.State {
 	map: Phaser.Tilemap;
 	backgroundLayer: Phaser.TilemapLayer;
 	blockedLayer: Phaser.TilemapLayer;
+	hud = new Hud();
 
 	// mouse stuffs
 	spawnPositions: point[];
@@ -43,6 +45,8 @@ export default class LevelState extends Phaser.State {
 		this.blockedLayer = this.map.createLayer('blockedLayer');
 		this.game.physics.enable(this.blockedLayer);
 		this.map.setCollisionBetween(0, 1, true, 'blockedLayer');
+		
+		this.hud.init(this.game, '10');	
 
 		// obtain array of spawn positions from our tiledmap
 		this.spawnPositions = this.findPositionOfType('startingPosition');
@@ -63,7 +67,7 @@ export default class LevelState extends Phaser.State {
 	update () {
 		this.game.physics.arcade.collide(this.mice, this.blockedLayer, this.mouseCollides);
 		this.game.physics.arcade.collide(this.mice, this.traps, this.mouseTrap, null, this);
-		this.game.physics.arcade.collide(this.mice, this.cheese, this.mouseEatsCheese);
+		this.game.physics.arcade.collide(this.mice, this.cheese, this.mouseEatsCheese, null, this);
 		
 		if (this.mouseCount < 1) {
 			this.game.state.start(this.nextState, true);
@@ -88,6 +92,7 @@ export default class LevelState extends Phaser.State {
 	mouseEatsCheese(cheese: Cheese, mouse: Mouse) {
 		mouse.eatCheese();
 		cheese.health -= 10;
+		this.hud.update('cheeseHealth', cheese.health.toString());
 	}
 
 	onClick () {
