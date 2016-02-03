@@ -31,6 +31,7 @@ export default class LevelState extends Phaser.State {
 	mouseSpeed: number;
 	frequency: number;
 	nextState: string;
+	trapCount: number;
 
 	setupLevel () {
 
@@ -46,7 +47,9 @@ export default class LevelState extends Phaser.State {
 		this.game.physics.enable(this.blockedLayer);
 		this.map.setCollisionBetween(0, 1, true, 'blockedLayer');
 		
-		this.hud.init(this.game, '10');	
+		this.trapCount = this.mouseCount;
+		
+		this.hud.init(this.game, this.trapCount.toString());	
 
 		// obtain array of spawn positions from our tiledmap
 		this.spawnPositions = this.findPositionOfType('startingPosition');
@@ -89,18 +92,29 @@ export default class LevelState extends Phaser.State {
 		trap.destroy();
 	}
 
-	mouseEatsCheese(cheese: Cheese, mouse: Mouse) {
+	mouseEatsCheese (cheese: Cheese, mouse: Mouse) {
 		mouse.eatCheese();
 		cheese.health -= 10;
 		this.hud.update('cheeseHealth', cheese.health.toString());
 	}
 
-	onClick () {
+	onClick (event) {
+		if (event.targetObject && event.targetObject.sprite.key === 'trap') return;
 		var tile = this.blockedLayer.getTileXY(this.game.input.mousePointer.x, this.game.input.mousePointer.y, <Phaser.Point>{});
-		if (this.blockedLayer.layer.data[tile.y][tile.x].index !== 1) {
-			this.traps.create(tile.x * 32, tile.y * 32, 'trap');
+		if (this.blockedLayer.layer.data[tile.y][tile.x].index !== 1 && this.trapCount > 0) {
+			let trap = this.traps.create(tile.x * 32, tile.y * 32, 'trap');
+			trap.inputEnabled = true;
+			trap.events.onInputDown.add(this.trapClicked, this);
+			this.trapCount--;
+			this.hud.update('mouseTraps', this.trapCount.toString());
 		}
 	}
+
+	trapClicked (trap) {
+		trap.destroy();
+		this.trapCount++;
+		this.hud.update('mouseTraps', this.trapCount.toString());
+	}	
 
 	// helper function to get objects from map by type
 	findObjectsByType (type : string, layer : string) {

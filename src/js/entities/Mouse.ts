@@ -105,11 +105,11 @@ export default class Mouse extends Phaser.Sprite {
 			this.frame = 0;
 		}
 		this.animations.play('thief');
-		// this.setVelocity('right');
 		this.body.velocity.x = this.speed;
 	}
 
 	onKilled (cb) {
+		this.body.setSize(0, 0);
 		this.animations.stop();
 		this.animations.play('death').onComplete.add(() => {
 			this.destroy();
