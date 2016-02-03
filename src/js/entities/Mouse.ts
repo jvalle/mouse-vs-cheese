@@ -30,8 +30,7 @@ export default class Mouse extends Phaser.Sprite {
 		this.body.setSize(31, 31);
 
 		this.setVelocity(this.direction);
-
-		this.cursors = this.game.input.keyboard.createCursorKeys();
+		this.events.onOutOfBounds.add(this.onExit, this);
 	}
 
 	update () {
@@ -104,6 +103,8 @@ export default class Mouse extends Phaser.Sprite {
 		} else {
 			this.frame = 0;
 		}
+		
+		this.setVelocity('right');
 	}
 
 	onKilled (cb) {
@@ -112,5 +113,9 @@ export default class Mouse extends Phaser.Sprite {
 			this.destroy();
 			cb();
 		});
+	}
+	
+	onExit () {
+		this.destroy();
 	}
 }

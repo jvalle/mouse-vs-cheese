@@ -11,7 +11,7 @@ import GameOver from './states/GameOver.ts';
 
 import {Level1, Level2, Level3} from './states/Levels.ts';
 
-const game = new Phaser.Game("100", "100", Phaser.AUTO, 'app');
+const game = new Phaser.Game(480, 480, Phaser.AUTO, 'app');
 
 game.state.add('Preload', Preload);
 

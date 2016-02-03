@@ -43,7 +43,7 @@ export class Level3 extends LevelState {
 		this.mapName = 'level3';
 		this.mouseCount = 30;
 		this.mouseSpeed = 100;
-		this.frequency = 800;
+		this.frequency = 500;
 		this.nextState = 'int3';
 	}
 }
