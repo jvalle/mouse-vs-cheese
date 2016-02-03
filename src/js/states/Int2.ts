@@ -9,7 +9,7 @@ export default class Int1 extends Phaser.State {
 				fontSize: '36px',
 				fill: '#ffffff'
 		});
-		var text = this.game.add.text(0, header.height * 2 + 110, 'well done there. boy thems a lots a mice a\'comin fer that cheese\nhungrier \'em mice get the faster thems a\'comin\nso git yer trigger finger ready for this next go\'roun', {
+		var text = this.game.add.text(0, header.height * 2 + 110, 'well done there. boy thems a\nlots a mice a\'comin fer that cheese\nhungrier \'em mice get the faster thems a\'comin\nso git yer trigger finger ready\nfor this next go\'roun', {
 				font: 'Arial',
 				fontSize: '18px',
 				fill: '#ffffff'
