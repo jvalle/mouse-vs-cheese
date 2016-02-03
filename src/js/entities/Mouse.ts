@@ -24,6 +24,7 @@ export default class Mouse extends Phaser.Sprite {
 		this.animations.add('left', [3, 4, 5], this.framerate, true);
 		this.animations.add('right', [6, 7, 8], this.framerate, true);
 		this.animations.add('death', [12, 13, 14, 14, 14, 14], this.framerate, false);
+		this.animations.add('thief', [15, 16, 17], this.framerate, true);
 
 		// add physics
 		this.game.physics.arcade.enable(this);
@@ -103,8 +104,9 @@ export default class Mouse extends Phaser.Sprite {
 		} else {
 			this.frame = 0;
 		}
-		
-		this.setVelocity('right');
+		this.animations.play('thief');
+		// this.setVelocity('right');
+		this.body.velocity.x = this.speed;
 	}
 
 	onKilled (cb) {
