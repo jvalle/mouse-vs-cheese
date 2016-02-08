@@ -47,3 +47,19 @@ export class Level3 extends LevelState {
 		this.nextState = 'int3';
 	}
 }
+
+export class Level4 extends LevelState {
+	mapName: string;
+	mouseCount: number;
+	mouseSpeed: number;
+	frequency: number;
+	nextState: string;
+
+	setupLevel() {
+		this.mapName = 'level4';
+		this.mouseCount = 30;
+		this.mouseSpeed = 100;
+		this.frequency = 750;
+		this.nextState = 'int4';
+	}
+}
