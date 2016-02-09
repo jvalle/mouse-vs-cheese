@@ -39,6 +39,7 @@ export default class LevelState extends Phaser.State {
 
 	create () {
 		this.setupLevel();
+		// this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// setup the map
 		this.map = this.game.add.tilemap(this.mapName);
 		this.map.addTilesetImage('tiles', 'gameTiles');
@@ -102,7 +103,7 @@ export default class LevelState extends Phaser.State {
 	}
 
 	onClick (event) {
-		if (event.targetObject && event.targetObject.sprite.key === 'trap') return;
+		if (event.targetObject && event.targetObject.sprite && event.targetObject.sprite.key === 'trap') return;
 		var tile = this.blockedLayer.getTileXY(this.game.input.mousePointer.x, this.game.input.mousePointer.y, <Phaser.Point>{});
 		if (this.blockedLayer.layer.data[tile.y][tile.x].index !== 1 && this.trapCount > 0) {
 			let trap = this.traps.create(tile.x * 32, tile.y * 32, 'trap');

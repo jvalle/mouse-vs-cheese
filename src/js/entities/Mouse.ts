@@ -93,6 +93,7 @@ export default class Mouse extends Phaser.Sprite {
 	}
 
 	eatCheese () {
+		this.body.setSize(0, 0);
 		this.animations.stop();
 
 		if (this.direction === 'right') {
